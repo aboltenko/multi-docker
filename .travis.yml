@@ -1,0 +1,22 @@
+sudo:required
+services:
+  - docker
+
+before_install:
+  - docker build -t adocker123adocker/react-test -f ./client/Dockerfile.dev ./client
+
+script:
+  - docker run -e CI=true adocker123adocker/react-test npm test
+
+after_success:
+  - docker build -t adocker123adocker/multi-client ./client
+  - docker build -t adocker123adocker/multi-nginx ./nginx
+  - docker build -t adocker123adocker/multi-server ./server
+  - docker build -t adocker123adocker/multi-worker ./worker
+  # log in to the docker cli
+  - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_ID" --password-stdin
+  # Take those images to docker hub
+  - docker push adocker123adocker/multi-client
+  - docker push adocker123adocker/multi-nginx
+  - docker push adocker123adocker/multi-server
+  - docker push adocker123adocker/multi-worker 
