@@ -1,4 +1,4 @@
-sudo:required
+sudo: required
 services:
   - docker
 
@@ -20,4 +20,4 @@ after_success:
   - docker push adocker123adocker/multi-nginx
   - docker push adocker123adocker/multi-server
   - docker push adocker123adocker/multi-worker 
-  # some edit
+
